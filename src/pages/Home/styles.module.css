@@ -1,0 +1,26 @@
+.emptyBox {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  gap: 24px;
+  margin: 32px 0;
+  p {
+    color: var(--secondary-6);
+    font-size: 16px;
+    font-weight: 200;
+    text-align: center;
+
+    span {
+      color: var(--primary-3);
+      font-weight: 600;
+    }
+  }
+}
+
+.link {
+  align-self: flex-end;
+}

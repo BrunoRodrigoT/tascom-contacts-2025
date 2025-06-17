@@ -1,0 +1,7 @@
+.backButton {
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  margin: 12px 0;
+  color: var(--secondary-1);
+}
