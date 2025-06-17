@@ -28,16 +28,19 @@ export default function Create() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    const contacts = ContactsService.get();
-    const contact: IContact = {
-      id: String(contacts.length + 1),
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      category_id: data.category_id,
-    };
-    ContactsService.post(contact);
-    reset();
+    try {
+      const contact: IContact = {
+        id: String(new Date().getTime()), // gera um ID exclusivo baseado no timestamp
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        category_id: data.category_id,
+      };
+      ContactsService.post(contact);
+      reset();
+    } catch (error) {
+      alert(error);
+    }
   });
 
   return (

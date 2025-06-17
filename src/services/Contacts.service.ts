@@ -13,9 +13,20 @@ export default class ContactsService {
     }
 
     static post(contact: IContact) {
-        const contacts = this.get()
-        contacts.push(contact)
-        localStorage.setItem(this.storage, JSON.stringify(contacts))
+        const contacts = this.get();
+        const isDuplicate = contacts.some(
+            (existingContact) =>
+                existingContact.email === contact.email ||
+                existingContact.phone === contact.phone
+        );
+        // Verifica se o contato possui e-mail ou telefone duplicados
+        if (isDuplicate) {
+            throw new Error(
+                "Já existe um contato com este e-mail ou telefone."
+            );
+        }
+        contacts.push(contact);
+        localStorage.setItem(this.storage, JSON.stringify(contacts));
     }
 
     static delete(id: string) {
@@ -24,14 +35,22 @@ export default class ContactsService {
         localStorage.setItem(this.storage, JSON.stringify(filteredContacts))
     }
 
-    static async update(id: string, contact: IContact) {
+    static async update(id: string, updatedContact: IContact) {
         try {
-            const contacts = this.get()
-            const filteredContacts = contacts.filter((contact: IContact) => contact.id !== id)
-            filteredContacts.push(contact)
-            localStorage.setItem(this.storage, JSON.stringify(filteredContacts))
+            const contacts = this.get();
+            const contactIndex = contacts.findIndex((contact: IContact) => contact.id === id);
+
+            if (contactIndex === -1) {
+                throw new Error(`Contato com id ${id} não encontrado.`);
+            }
+
+            // Atualiza o contato no índice encontrado
+            contacts[contactIndex] = { ...contacts[contactIndex], ...updatedContact };
+
+            // Armazena a lista atualizada no localStorage
+            localStorage.setItem(this.storage, JSON.stringify(contacts));
         } catch (error) {
-            console.error(error)
+            console.error("Erro ao atualizar o contato:", error);
         }
     }
 }

@@ -26,15 +26,12 @@ export default function Edit() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    const contacts = ContactsService.get();
-    const contactData: IContact = {
-      id: String(contacts.length + 1),
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      category_id: data.category_id,
-    };
-    ContactsService.update(String(param.id), contactData);
+    try {
+      ContactsService.update(String(param.id), data);
+      alert("Contato atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar contato:", error);
+    }
   });
 
   return (
